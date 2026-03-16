@@ -144,19 +144,10 @@ class YouDotComSearch_Tools implements INode {
 
         const config: Record<string, any> = { apiKey }
 
-        const count = nodeData.inputs?.count as number
-        const freshness = nodeData.inputs?.freshness as string
-        const country = nodeData.inputs?.country as string
-        const safesearch = nodeData.inputs?.safesearch as string
-        const livecrawl = nodeData.inputs?.livecrawl as string
-        const livecrawl_formats = nodeData.inputs?.livecrawl_formats as string
-
-        if (count) config.count = count
-        if (freshness) config.freshness = freshness
-        if (country) config.country = country
-        if (safesearch) config.safesearch = safesearch
-        if (livecrawl) config.livecrawl = livecrawl
-        if (livecrawl_formats) config.livecrawl_formats = livecrawl_formats
+        for (const { name } of this.inputs) {
+            const value = nodeData.inputs?.[name]
+            if (value !== undefined && value !== null && value !== '') config[name] = value
+        }
 
         return youSearch(config)
     }
